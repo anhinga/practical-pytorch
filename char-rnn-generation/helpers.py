@@ -1,6 +1,5 @@
 # https://github.com/spro/practical-pytorch
 
-import unidecode
 import string
 import random
 import time
@@ -10,16 +9,18 @@ from torch.autograd import Variable
 
 # Reading and un-unicode-encoding data
 
-all_characters = string.printable
-n_characters = len(all_characters)
-
 def read_file(filename):
-    file = unidecode.unidecode(open(filename).read())
-    return file, len(file)
+    file = open(filename).read()
+    char_set = set(file);
+    char_list = list(char_set)
+    all_characters = "".join(c for c in char_list)
+    n_characters = len(all_characters)
+    print(n_characters)
+    return file, len(file), all_characters, n_characters
 
 # Turning a string into a tensor
 
-def char_tensor(string):
+def char_tensor(string, all_characters):
     tensor = torch.zeros(len(string)).long()
     for c in range(len(string)):
         tensor[c] = all_characters.index(string[c])
